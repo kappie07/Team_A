@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Project proposal Team-A\\ Simulation and Modelling in Astrophysics\\ Searching for binary systems formed by ejected stars in the aftermath of merging galaxies}
+\author{Jaro Molenkamp \& Kasper Roewen }
+\date{September 2020}
+
+\begin{document}
+
+
+\maketitle
+
+\section{Summary}%both
+This project will search for a system of binary stars which have formed, through gravitational capture, after the stars were ejected by two merging galaxies. The project will use a N-body gravity code to simulate the galaxies, as well as the individual stars which are used to search for binary systems. The total runtime of the simulation will be twice the merger time of the galaxies to not search endlessly to the binary system.
+
+\section{Research question}%Jaro
+The goal of the project is to study the capture of binary stars in two merging galaxies, where one small galaxy spirals into the larger galaxy. The question that we seek to answer therefore is; can we find binary star systems as a result of a galaxy merger with gravitational only simulations? Hereby we will look if this phenomenon occurs within two times the timescale it took for the galaxies to merge.
+
+\section{Method}%Kasper
+We need to set up the following things to answer our research question: two galaxies that move towards each other to eventually merge, and stars to follow within these galaxies to see if they are flung out of the merger. The galaxies are setup using an N-body code with different components: The Dark matter halo, the stellar disk and the stellar bulge, each component will have different number of particles, as well as different mass assigned to them. Following the book's example of galaxy mergers, we will use the code GalactICs.\cite{KuijkenDubinski} This code sets up a self consisting galaxy model with a DM halo, a disk and a bulge. We will then use a tree code to calculate the equations of motion for the galaxies. The stars are added separately and will follow the stellar distribution of the stellar components.\\
+\\
+The project will be done in a couple of steps:
+\begin{itemize}
+    \item setup the galaxies for merging, where checking the right initial conditions
+    \item add the stars and investigate the fraction which is flung away during the merger
+    \item follow the stars to see if a binary pair forms
+\end{itemize}\\
+\\
+The two galaxies that are merging are order of size Milky way $(10^{12} M_{\odot})$ and Large Magellanic cloud $(10^{11} M_{\odot})$. The galaxies are placed on a distance ~500 kpc, to ensure that they are isolated before starting the gravitational calculations and are aimed to merge within a couple of Gyr\cite{Lotz_2008}. The added stars will be assigned a mass assuming a Salpeter mass function to ensure a reasonable mass distribution. The amount of stars that are shot out is mostly dependent on the relative velocity of the galaxies. The collision angle will influence the number of ejected stars, but will most likely not dominate.
+
+% paper about GalactICs: https://ui.adsabs.harvard.edu/abs/1995MNRAS.277.1341K/abstract
+
+\section{Previous work \& importance}%Kasper importance, both previous work
+
+Capture of stars to form a binary star system has been described by Tohline (2002)\cite{Tohline2002}. Here is described that binary stars can form from the relatively simple mechanism of capture. However, purely gravitational encounters are rare resulting in only few binaries. For two unbound stars to form a binary a dissipation of the energy is needed. This dissipation of energy can occur by energy transfer of both unbound stars to a third unbound star. The third star then remains unbound and the other two stars form a binary star system.\\
+\\
+This work can show the possibilities for the formation of a rare binary star system. The system will likely have a high velocity due to the ejection from the merging galaxies. The discovery of such a system could tell us about their origin, and the preferable space where these ejected stars might have lived.
+%Previous work?: https://www.science.gov/topicpages/g/galaxy+merger+simulations 
+%something about the capturing of stars to form a binary.
+
+%https://pdfs.semanticscholar.org/409b/8b1ff71f862669f4c0d431ffada428c3a34c.pdf
+
+
+
+\section{Mitigation strategy}%Jaro
+With a project there is always a presence of risk. However, we strive to keep these risks to a minimum. In this project we will assume risk, try to avoid risk, control risk and monitor risk. Since we work on programming, bugs and calculation times form a risk. We will try to avoid these risks by assuming they will happen, we can therefore adapt our methods. For example, to minimize bugs we will slowly progress towards our goal, we make use of sub-questions to our research question in order to break down the risk of not answering it. Furthermore, since calculation time is most likely going to be a problem we are going to monitor the progress along the way. For example, if we look at the sub-question, how much calculation time was needed for this? Is this a reasonable amount or do we have to switch our calculation method. By implementing sub-questions and sub-tasks with a self-made deadline we control the risk at all times and thus minimize the overall risk.
+
+\bibliographystyle{abbrv}
+\bibliography{References}
+
+
+\end{document}
