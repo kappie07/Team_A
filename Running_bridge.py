@@ -1,5 +1,5 @@
 from amuse.units import units
-from amuse.lab import new_galactics_model
+from amuse.lab import nbody_system, new_galactics_model
 import copy
 import numpy as np
 import matplotlib.pyplot as plt
