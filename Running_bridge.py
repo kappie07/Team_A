@@ -1,5 +1,5 @@
 from amuse.units import units
-from amuse.lab import Huayno, nbody_system, new_galactics_model
+from amuse.lab import new_galactics_model
 import copy
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,12 +13,14 @@ from astropy.io import fits
 # Andromeda := Mdisk = 4-7 Mbulge | Mhalo = 87 Mbulge
 # Mdisk = 5 Mbulge, Mhalo = 95 Mbulge
 
+print("everything is fine up to now")
 n_halo  = 2000
 n_bulge = 1000
 n_disk  = 1000
 M_galaxy = 1e12 | units.MSun
 R_galaxy = 80  | units.kpc
 converter = nbody_system.nbody_to_si(M_galaxy, R_galaxy)
+print("trying to create the galaxy")
 
 galaxy1 = new_galactics_model(n_halo,
                                 converter,
