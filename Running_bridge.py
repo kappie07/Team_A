@@ -3,7 +3,7 @@ from amuse.lab import nbody_system, new_galactics_model
 import copy
 import numpy as np
 import matplotlib.pyplot as plt
-from tqdm import tqdm
+#from tqdm import tqdm
 from amuse.couple import bridge
 from amuse.community.bhtree.interface import BHTree
 from astropy.io import fits
@@ -101,7 +101,7 @@ gravity.timestep = 1|units.Myr
 threshold = 20. |units.Myr 
 
 times = np.arange(0., 7000, 10) | units.Myr
-for time in tqdm(range(len(times))):
+for time in range(len(times)):
     gravity.evolve_model(times[time])
     if times[time] %threshold == 0|units.Myr:
         channel.copy()
