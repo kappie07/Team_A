@@ -27,8 +27,8 @@ galaxy1 = new_galactics_model(n_halo,
                                 disk_number_of_particles=n_disk)
 # Order of particles: Disk => Bulge => Halo
 
-M_galaxy_2 = 5e11 | units.MSun
-R_galaxy_2 = 50  | units.kpc
+M_galaxy_2 = 1e12 | units.MSun
+R_galaxy_2 = 80  | units.kpc
 converter_2 = nbody_system.nbody_to_si(M_galaxy_2, R_galaxy_2)
 galaxy2 = new_galactics_model(n_halo,
                                 converter_2,
@@ -38,14 +38,16 @@ galaxy2 = new_galactics_model(n_halo,
                                 
 galaxy1.rotate(0., np.pi/2, 0.)
 galaxy2.x  += 400 | units.kpc
+galaxy2.y  += 100 | units.kpc
 galaxy2.vx += -180 |units.kms
-galaxy2.vy += +10 |units.kms
-galaxy1.vx += +20 |units.kms
+
+
 
 
 converter = nbody_system.nbody_to_si(1.e12|units.MSun, 100|units.kpc)
-dynamics = BHTree(converter,number_of_workers=2) # ph4 Does the trick, but is kinda slow
+dynamics = BHTree(converter,number_of_workers=10) # ph4 Does the trick, but is kinda slow
 dynamics.parameters.epsilon_squared = (100|units.parsec)**2
+dynamics.parameters.timestep = 1 |units.Myr
 set1 = dynamics.particles.add_particles(galaxy1)
 set2 = dynamics.particles.add_particles(galaxy2)
 
@@ -81,7 +83,8 @@ test_particles_2_stars.x  += 400 | units.kpc
 test_particles_2_stars.vx += -100 |units.kms
 test_particles_2_stars.vy += +10 |units.kms
 
-star_dynamics = BHTree(converter,number_of_workers=1)
+star_dynamics = BHTree(converter,number_of_workers=5)
+star_dynamics.parameters.timestep = 1|units.Myr
 star_set_1 = star_dynamics.particles.add_particles(test_particles_1_stars)
 star_set_2 = star_dynamics.particles.add_particles(test_particles_2_stars)
 
@@ -95,7 +98,7 @@ channel = star_dynamics.particles.new_channel_to(star_dynamics.particles)
 gravity.timestep = 1|units.Myr
 threshold = 20. |units.Myr 
 
-times = np.arange(0., 5000, 10) | units.Myr
+times = np.arange(0., 7000, 10) | units.Myr
 for time in tqdm(range(len(times))):
     gravity.evolve_model(times[time])
     if times[time] %threshold == 0|units.Myr:
@@ -111,7 +114,7 @@ for time in tqdm(range(len(times))):
         plt.xlim(-500,500)
         #plt.axis("equal")
         plt.ylim(-500,500)
-        #plt.savefig('./merge_plots/snap%04d.png'%time)
+        plt.savefig('./merge_plots/snap%04d.png'%time)
         #plt.show()
         plt.close()
         
@@ -128,7 +131,7 @@ for time in tqdm(range(len(times))):
         plt.xlim(-500,500)
         #plt.axis("equal")
         plt.ylim(-500,500)
-        #plt.savefig('./star_plots/snapshots/snap%04d.png'%time)
+        plt.savefig('./star_plots/snapshots/snap%04d.png'%time)
         plt.close()
         '''
         file = open("time.txt","w")
