@@ -102,8 +102,10 @@ threshold = 20. |units.Myr
 
 times = np.arange(0., 7000, 10) | units.Myr
 for time in range(len(times)):
+    print(time)
     gravity.evolve_model(times[time])
     if times[time] %threshold == 0|units.Myr:
+    
         channel.copy()
         #saving the orbit of the stars with mass
         plt.figure(figsize = (10,8))
