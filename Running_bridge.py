@@ -47,7 +47,7 @@ galaxy2.vx += -180 |units.kms
 
 
 converter = nbody_system.nbody_to_si(1.e12|units.MSun, 100|units.kpc)
-dynamics = BHTree(converter,number_of_workers=10) # ph4 Does the trick, but is kinda slow
+dynamics = BHTree(converter,number_of_workers=1) # ph4 Does the trick, but is kinda slow
 dynamics.parameters.epsilon_squared = (100|units.parsec)**2
 dynamics.parameters.timestep = 1 |units.Myr
 set1 = dynamics.particles.add_particles(galaxy1)
@@ -85,7 +85,7 @@ test_particles_2_stars.x  += 400 | units.kpc
 test_particles_2_stars.vx += -100 |units.kms
 test_particles_2_stars.vy += +10 |units.kms
 
-star_dynamics = BHTree(converter,number_of_workers=5)
+star_dynamics = BHTree(converter,number_of_workers=1)
 star_dynamics.parameters.timestep = 1|units.Myr
 star_set_1 = star_dynamics.particles.add_particles(test_particles_1_stars)
 star_set_2 = star_dynamics.particles.add_particles(test_particles_2_stars)
