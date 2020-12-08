@@ -16,9 +16,9 @@ from os import listdir
 from os.path import isfile, join
 
 
-n_halo  = 100000
-n_bulge = 50000
-n_disk  = 50000
+n_halo  = 1000000
+n_bulge = 500000
+n_disk  = 500000
 
 def binaries(particles,hardness = 10,G = constants.G,stars_index = int(n_disk)):
     # the number over which we want to check if they're binaries
@@ -36,8 +36,8 @@ def binaries(particles,hardness = 10,G = constants.G,stars_index = int(n_disk)):
     a = np.argsort(particles[int(len(particles)/2):int(len(particles)/2+n)].x.number)
     binaries = []
     #print(limitE.value_in(units.kms**2))
-    #for i in tqdm(range(n-1)):
-    for i in range(n):
+    for i in tqdm(range(n-1)):
+    #for i in range(n):
         j = i+1
         eb_max = 0 |units.kms**2
         while j < n and (particles.x[a[j]]-particles.x[a[i]])<2*G*max_mass/limitE:
@@ -50,9 +50,13 @@ def binaries(particles,hardness = 10,G = constants.G,stars_index = int(n_disk)):
             r = r2**0.5
             #eb = G*(particles.mass[a[i]]+particles.mass[a[j]])/r-0.5*v2
             mass = 1e6 |units.MSun
-            #print((G*(2*mass)/r).value_in(units.kms**2), v2.value_in(units.kms**2))
-            eb = G*(2*mass)/r - 0.5*v2
+            #print((G*(3*mass)/r).value_in(units.kms**2), v2.value_in(units.kms**2))
+            #print(G,mass,r,v2)
+            eb = G*(3*mass)/(5*r) - 0.5*v2
             #print(eb.value_in(units.kms**2),limitE.value_in(units.kms**2))
+            if eb > 0 |units.kms**2:
+            	print("binary found?", eb.value_in(units.kms**2),r.value_in(units.pc),(v2**0.5).value_in(units.kms))
+            """
             if r.value_in(units.kpc) < 0.1:
             	print(r.value_in(units.kpc), v2.value_in(units.kms**2))
             	print(eb.value_in(units.kms**2),limitE.value_in(units.kms**2))
@@ -63,6 +67,7 @@ def binaries(particles,hardness = 10,G = constants.G,stars_index = int(n_disk)):
                 binary = particles[a[i],a[j]].copy()
                 binary.hardness = eb/average_Ek
                 binaries.append(binary)
+            """
             j+=1
             #if eb_max > 0 |units.kms**2:
             #	print(eb_max.value_in(units.kms**2))
@@ -93,11 +98,11 @@ print("--- %s seconds ---" % (time.time() - start_time))
 #print("--- %s seconds ---" % (time.time() - start_time))
 """
 
-mypath = "/home/kasper/Team_A/data/"
+mypath = "/home/kasper/Team_A/Tidal_Wave/Large/Data/"
 onlyfiles = sorted([f for f in listdir(mypath) if isfile(join(mypath, f))])
 
 #for i in tqdm(range(len(onlyfiles))):
-for i in range(1):
+for i in range(249,250):
     file = fits.open(mypath+onlyfiles[i])
     data1 = file[1].data
     
@@ -148,19 +153,32 @@ for i in range(1):
     set_3.add_particles(set_1)
     set_3.add_particles(set_2)
 
-    binary_list = binaries(set_3)
-    if len(binary_list) > 0:
-    	print(binary_list)
+    #binary_list = binaries(set_3)
+    #if len(binary_list) > 0:
+    #	print(binary_list)
 	
-    """	
-    plt.clf()
+    	
+    #plt.clf()
     plt.scatter(set_1_x[:n_disk],set_1_y[:n_disk],s = 0.1)
     plt.scatter(set_2_x[:n_disk],set_2_y[:n_disk],s = 0.1)
     plt.scatter(set_1_x[n_disk:n_disk+n_bulge],set_1_y[n_disk:n_disk+n_bulge],s = 0.1)
     plt.scatter(set_2_x[n_disk:n_disk+n_bulge],set_2_y[n_disk:n_disk+n_bulge],s = 0.1)
+    plt.axhline(-0.4e21,linestyle = "--")
+    #plt.scatter(set_2_x[22484],set_2_y[22484],marker = "x")
+    #plt.scatter(set_2_x[41349],set_2_y[41349],marker = "x")    
     plt.tight_layout()
     plt.show()
     #plt.draw()
     #plt.pause(0.001)
-    """
-#print(len(np.where(set_2_y[:n_disk] <= -0.4e21)[0]))    
+    
+tidal_index = np.where(set_2_y[:n_disk] <= -0.4e21)[0]
+for i in tqdm(range(len(tidal_index))):
+    a1 = tidal_index[i]
+    #for j in range(i+1,len(tidal_index)):
+    a2 = tidal_index[i+1:]
+    #print(((set_2[a1].position - set_2[a2].position)**2).sum(axis =1))
+    #break
+    dist = (((set_2[a1].position - set_2[a2].position)**2).sum(axis =1))**0.5
+    closest = np.where(dist <= 50 |units.pc)[0]
+    if len(closest) > 0:
+    	print(a1,a2[closest],dist[closest].value_in(units.pc))    
